@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OCR</title>
+    <script src='https://unpkg.com/tesseract.js@v2.0.2/dist/tesseract.min.js'></script>
+</head>
+
+<body>
+    <img src="" alt="image" id="img"> <br>
+    <input type="file" id="inpFile" onchange="loadFile(event)">
+    <br>
+    <button id="btn">submit</button>
+    <br>
+    <p id="output"></p>
+    <script>
+        // to show image in img tag
+        const loadFile = (event) => {
+            var image = document.getElementById('img');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+
+        // when btn clicked recognize text
+        document.querySelector("#btn").onclick = async () => {
+            let inp = document.querySelector("#inpFile")
+
+            let output = document.querySelector("#output")
+            output.innerText = "Loading text"
+
+            try {
+
+                let text = await Tesseract.recognize(inp.files[0],
+                    'eng'
+                )
+                console.log(text.data.text)
+                output.innerText = text.data.text
+            } catch (e) {
+                output.innerText = "ERROR: sorry try again"
+            }
+        }
+
+    </script>
+</body>
+
+</html>
